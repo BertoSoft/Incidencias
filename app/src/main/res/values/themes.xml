@@ -3,7 +3,19 @@
     <style name="Base.Theme.Incidencias" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <item name="android:statusBarColor">@color/secundario</item>
+
     </style>
 
     <style name="Theme.Incidencias" parent="Base.Theme.Incidencias" />
+
+    <style name="Title">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/secundario</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:fontFamily">@font/domine_variable_font_wght</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
 </resources>

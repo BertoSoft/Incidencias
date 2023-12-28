@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <color name="primario">#FFFFFFFF</color>
+    <color name="primarioOscuro">#272626</color>
+    <color name="secundario">#9E8539</color>
+    <color name="claro">#CDDC39</color>
+    <color name="oro">#ffe78f</color>
+    <color name="rojo">#ff0000</color>
+
 </resources>
