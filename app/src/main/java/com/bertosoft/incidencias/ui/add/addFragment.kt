@@ -10,16 +10,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.bertosoft.incidencias.R
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bertosoft.incidencias.databinding.FragmentAddBinding
+import com.bertosoft.incidencias.ui.add.adapter.AddAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class addFragment : Fragment() {
 
     private val addViewModel by viewModels<AddViewModel>()
+    private lateinit var addAdapter: AddAdapter
     private var _binding: FragmentAddBinding? = null
     private val binding get() = _binding!!
 
@@ -30,14 +31,27 @@ class addFragment : Fragment() {
     }
 
     private fun initUi() {
+        initRv()
         initUiState()
+    }
+
+    private fun initRv() {
+        addAdapter = AddAdapter()
+
+        binding.rvAdd.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = addAdapter
+        }
     }
 
     private fun initUiState() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                addViewModel.addDatos.collect{
-                    Log.i("Alberto", it.toString())
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                addViewModel.addDatos.collect {
+                    //
+                    // Ha habido cambios en addDatos
+                    //
+                    addAdapter.refrescaLista(it)
                 }
             }
         }

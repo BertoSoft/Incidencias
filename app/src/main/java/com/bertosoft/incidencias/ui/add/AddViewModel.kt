@@ -9,13 +9,14 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class AddViewModel @Inject constructor(): ViewModel() {
+class AddViewModel @Inject constructor() : ViewModel() {
 
     private var _addDatos = MutableStateFlow<List<AddInfo>>(emptyList())
     val addDatos: StateFlow<List<AddInfo>> = _addDatos
 
     init {
-        _addDatos.value = listOf(HED, HEN, HEF, Voladuras)
+        _addDatos.value = listOf(HED, HEN, Voladuras, HEF)
+        val i =0
     }
 
 

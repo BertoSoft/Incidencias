@@ -4,9 +4,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Texto Iconos pantalla Add -->
-    <string name="HED">Horas Extras Diurnas</string>
-    <string name="HEN">Horas Extras Nocturnas</string>
-    <string name="HEF">Horas Extras Festivos</string>
-    <string name="Voladuras">Plus de voladuras</string>
+    <string name="HED">H.E.D.</string>
+    <string name="HEN">H.E.N.</string>
+    <string name="HEF">H.E.F.</string>
+    <string name="Voladuras">Plus Voladuras</string>
 
 </resources>
