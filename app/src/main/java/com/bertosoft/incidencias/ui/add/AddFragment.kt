@@ -1,23 +1,27 @@
 package com.bertosoft.incidencias.ui.add
 
+
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bertosoft.incidencias.databinding.FragmentAddBinding
+import com.bertosoft.incidencias.domain.model.AddEnumModel
+import com.bertosoft.incidencias.domain.model.AddInfo
 import com.bertosoft.incidencias.ui.add.adapter.AddAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class addFragment : Fragment() {
+class AddFragment : Fragment() {
 
     private val addViewModel by viewModels<AddViewModel>()
     private lateinit var addAdapter: AddAdapter
@@ -32,19 +36,49 @@ class addFragment : Fragment() {
 
     private fun initUi() {
         initRv()
-        initUiState()
+        initColectorDatos()
     }
 
     private fun initRv() {
-        addAdapter = AddAdapter()
+        addAdapter = AddAdapter(onItemSeleccionado = {
+            val seleccion = when(it){
+                AddInfo.HED -> AddEnumModel.HED
+                AddInfo.HEF -> AddEnumModel.HEF
+                AddInfo.HEN -> AddEnumModel.HEN
+                AddInfo.Voladuras -> AddEnumModel.Voladuras
+            }
 
+            //
+            // Si pulsamos voladuras guardamos directamente, si no llamamos a detalle
+            //
+            if(seleccion == AddEnumModel.Voladuras){
+                guardarPlusVoladura()
+            }
+            else{
+                findNavController().navigate(
+                    AddFragmentDirections.actionAddFragmentToDetalleAddActivity(seleccion)
+                )
+            }
+        })
         binding.rvAdd.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = addAdapter
         }
     }
 
-    private fun initUiState() {
+    private fun guardarPlusVoladura() {
+
+        val respuesta = addViewModel.setPlusVoladuras(this.requireContext())
+
+        if(respuesta != ""){
+            Toast.makeText(this.requireContext(), respuesta, Toast.LENGTH_SHORT).show()
+        }
+        else{
+            Toast.makeText(this.requireContext(), "Plus de voladuras, guardado con exito", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun initColectorDatos() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 addViewModel.addDatos.collect {
@@ -57,8 +91,7 @@ class addFragment : Fragment() {
         }
     }
 
-
-    override fun onCreateView(
+   override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -67,4 +100,8 @@ class addFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
